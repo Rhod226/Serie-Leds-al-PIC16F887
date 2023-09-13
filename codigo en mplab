@@ -1,0 +1,68 @@
+#include <xc.h>
+
+// Define oscillator frequency (10MHz)
+#define _XTAL_FREQ 10000000
+
+// Configuration bits
+#pragma config FOSC = XT    // External 10MHz oscillator
+#pragma config WDTE = OFF   // Watchdog Timer disabled
+#pragma config PWRTE = ON   // Power-Up Timer enabled
+#pragma config BOREN = OFF  // Brown-out Reset disabled
+#pragma config LVP = OFF    // Low-Voltage Programming disabled
+
+#define BUTTON RB0  // Define the button connected to RB0
+#define LED1 RB1    // Define LED1 connected to RB1
+#define LED2 RB2    // Define LED2 connected to RB2
+#define LED3 RB3    // Define LED3 connected to RB3
+#define LED4 RB4    // Define LED4 connected to RB4
+
+// Function to introduce a delay
+void delay_ms(unsigned int ms) {
+    for (unsigned int i = 0; i < ms; i++) {
+        __delay_ms(1); // Uses MPLAB X's built-in delay function
+    }
+}
+
+void main() {
+    // Set PORTB pins as outputs for the LEDs
+    TRISB1 = 0;
+    TRISB2 = 0;
+    TRISB3 = 0;
+    TRISB4 = 0;
+
+    // Set RB0 as an input for the button
+    TRISB0 = 1;
+
+    // Initialize PORTB to turn off all LEDs initially
+    LED1 = 0;
+    LED2 = 0;
+    LED3 = 0;
+    LED4 = 0;
+
+    while (1) {
+        // Check if the button is pressed (active low)
+        if (BUTTON == 0) {
+            // Turn on the first LED (LED1)
+            LED1 = 1;
+            delay_ms(500); // Delay for 500 milliseconds
+
+            // Turn on the second LED (LED2)
+            LED1 = 0;
+            LED2 = 1;
+            delay_ms(500);
+
+            // Turn on the third LED (LED3)
+            LED2 = 0;
+            LED3 = 1;
+            delay_ms(500);
+
+            // Turn on the fourth LED (LED4)
+            LED3 = 0;
+            LED4 = 1;
+            delay_ms(500);
+
+            // Turn off all LEDs
+            LED4 = 0;
+        }
+    }
+}
